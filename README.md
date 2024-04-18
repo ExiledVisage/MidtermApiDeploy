@@ -11,10 +11,10 @@ The university API system can be authenticated using JWT bearer token and monito
 - NestJS: A progressive Node.js framework for building efficient and scalable server-side applications.
 - Authentication: Users can authenticate using JWT bearer token.
 - Swagger Documentation: API endpoints can be monitored using Swagger.
-- Mobile Integration: Integration with mobile applications for accessing university services.
-- Banking Integration: Integration with banking systems for student fee payments.
-- Admin Panel: Administrative panel for managing users, roles, and permissions.
-- Models: Data models for storing information about students, tuition_total, and faculty balance.
+- Mobile Integration: Integration with mobile applications for viewing tuitions.
+- Banking Integration: Integration with banking systems for student tuition view and paying the tuitions.
+- Admin Panel: Administrative panel for managing students.
+- Models: Student, Admin, Payment, Tuition models.
 - PostgreSQL: Database for storing information about students, tuition_total, and faculty balance.
 
 ### Operations
