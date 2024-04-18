@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, MoreThan } from 'typeorm';
 import { Tuition } from 'src/entities/tuition.entity';
 import { Student } from 'src/entities/student.entity';
 
@@ -15,7 +15,7 @@ export class AdminService {
     
       async addTuition(studentNo: string, term: string): Promise<any> {
         // Find student by studentNo
-        const student = await this.studentRepository.findOne({ studentNo });
+        const student = await this.studentRepository.findOne({where: { studentNo }});
         if (!student) {
           return { error: 'Student not found' };
         }
@@ -34,9 +34,9 @@ export class AdminService {
       async getUnpaidTuition(term: string): Promise<any> {
         // Find students with unpaid tuition amounts for the specified term
         const unpaidTuition = await this.tuitionRepository.find({
-          where: { term, balance: { $gt: 0 } },
-          relations: ['student'],
-        });
+            where: { term, balance: MoreThan(0) }, // Use MoreThan(0) to find balances greater than 0
+            relations: ['student'], // Include the 'student' relation to fetch associated student data
+          });
     
         return unpaidTuition.map(tuition => ({
           studentNo: tuition.student.studentNo,
