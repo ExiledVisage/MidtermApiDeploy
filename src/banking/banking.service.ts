@@ -38,28 +38,48 @@ export class BankingService {
         if (!tuition) {
           return { error: 'Tuition information not found for the specified term' };
         }
-    
-        // Verify payment amount and update balance
-        const paymentAmount = tuition.tuitionTotal;
-        const remainingBalance = tuition.balance - paymentAmount;
-    
-        // Check if payment amount matches tuition total
-        if (remainingBalance < 0) {
-          return { error: 'Insufficient funds: Payment amount exceeds tuition total' };
+
+        
+        if(student.balance  <= 0 ){
+          return { error: "Wallet does not have money" };
         }
-    
-        // Record payment
+
+        
         const payment = new Payment();
         payment.student = student;
         payment.term = term;
-        payment.paymentAmount = paymentAmount;
+        payment.paymentAmount = 0;
         payment.status = 'Successful';
+        
+    
+       
+        const tuitionBalanceFinal =  tuition.balance - student.balance;
+        const studentBalanceFinal = student.balance - tuition.balance;
+
+        if(tuitionBalanceFinal < 0){
+          payment.paymentAmount = tuition.balance;          
+          tuition.balance = 0;
+          student.balance = studentBalanceFinal;
+        }
+        else if( tuitionBalanceFinal == 0){
+          payment.paymentAmount = student.balance;
+          tuition.balance = 0; 
+          student.balance = 0;
+        }
+        else{
+          tuition.balance = tuitionBalanceFinal;
+          payment.paymentAmount = student.balance;
+          student.balance = 0;
+        }
+
+        
+        
     
         await this.paymentRepository.save(payment);
     
-        // Update balance
-        tuition.balance = remainingBalance;
+        
         await this.tuitionRepository.save(tuition);
+        await this.studentRepository.save(student);
     
         return { status: 'Successful' };
       }

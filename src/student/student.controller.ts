@@ -8,9 +8,16 @@ export class StudentController {
 
     constructor(private readonly studentService: StudentService) {}
 
-    @Post()
-    async create(@Body() student: Student) {
-      return this.studentService.create(student);
+    @Post('register')
+    async register(@Body() studentData: Student) {
+      const student = this.studentService.registerStudent(studentData);
+      return { message: 'Student registered successfully', student };
+    }
+  
+    @Post('login')
+    async login(@Body() loginData: { email: string, password: string }) {
+      const token = await this.studentService.login(loginData.email, loginData.password);
+      return { token };
     }
   
 }

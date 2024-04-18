@@ -7,6 +7,6 @@ export class MobileController {
 
   @Get('query-tuition/:studentNo')
   async queryTuition(@Param('studentNo') studentNo: string) {
-    return this.mobileService.queryTuition(studentNo);
-  }
+    return this.mobileService.queryTuition(studentNo)
+}
 }

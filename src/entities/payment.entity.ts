@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
-import { Student } from './student.entity';
+import { Student} from './student.entity';
 import { Tuition } from './tuition.entity';
 
 @Entity()
@@ -21,6 +21,6 @@ export class Payment {
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   paymentAmount: number;
 
-  @Column({ default: 'Successful' }) // Assuming payment status is successful by default
+  @Column({ default: 'Successful' }) 
   status: string;
 }
